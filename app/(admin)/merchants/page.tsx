@@ -22,7 +22,7 @@ interface MerchantProps {
 export default function Merchants() {
   const getMerchants = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/merchants`)
+      const res = await axios.get(`/api/merchants`)
       if (res) {
         return res.data
       }
