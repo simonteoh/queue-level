@@ -27,7 +27,7 @@ export default function Merchants() {
         return res.data
       }
     } catch (error) {
-
+      console.log(error)
     }
   }
   const { isPending, isError, data: merchants, error } = useQuery<MerchantProps[]>({
