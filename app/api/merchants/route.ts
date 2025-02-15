@@ -1,10 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
         const merchants = await prisma.merchants.findMany();
         return NextResponse.json(merchants, { status: 200 });

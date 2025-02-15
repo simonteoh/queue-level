@@ -33,6 +33,7 @@ export default function LoginPage() {
       router.push('/'); // Redirect to dashboard after successful login
     } catch (error) {
       setError('Something went wrong');
+      console.log(error)
     } finally {
       setIsLoading(false);
     }

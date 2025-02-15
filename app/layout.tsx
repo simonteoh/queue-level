@@ -4,7 +4,6 @@ import { AppProvider } from '@toolpad/core/nextjs';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Storefront } from '@mui/icons-material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Navigation } from '@toolpad/core/AppProvider';
 import { AuthProvider } from './providers/AuthProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

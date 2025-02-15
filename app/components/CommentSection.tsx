@@ -11,7 +11,7 @@ interface CommentSectionProps {
 
 export default function CommentSection({ isOpen, onClose }: CommentSectionProps) {
   const controls = useAnimation();
-  const [isDragging, setIsDragging] = useState(false);
+  // const [isDragging, setIsDragging] = useState(false);
 
   // Height of the comment section
   const COMMENT_SECTION_HEIGHT = '70vh';
@@ -37,7 +37,7 @@ export default function CommentSection({ isOpen, onClose }: CommentSectionProps)
       // If not dragged past threshold, snap back to visible position
       controls.start('visible');
     }
-    setIsDragging(false);
+    // setIsDragging(false);
   };
 
   const variants = {
