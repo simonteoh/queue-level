@@ -14,7 +14,7 @@
     "@auth/prisma-adapter": "^2.7.4",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
-    "@mui/icons-material": "^6.1.9",
+    "@mui/icons-material": "^6.4.9",
     "@mui/material": "^6.1.9",
     "@mui/material-nextjs": "^6.1.9",
     "@prisma/client": "^6.2.1",
