@@ -84,44 +84,57 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [userRole, setUserRole] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     try {
       const user = localStorage.getItem('user');
-
-      console.log("localstorage", user)
-      if (user) {
-        const userData = JSON.parse(user);
-        setUserRole(userData.role);
-        setUserName(`${userData.firstName} ${userData.lastName}`);
+      if (!user) {
+        router.replace('/login');
+        return;
       }
+
+      const userData = JSON.parse(user) as UserData;
+      if (!userData.role) {
+        localStorage.removeItem('user');
+        router.replace('/login');
+        return;
+      }
+
+      setUserRole(userData.role);
+      setUserName(`${userData.firstName} ${userData.lastName}`);
     } catch (error) {
       console.error('Error parsing user data:', error);
-      localStorage.removeItem('user'); // Clear invalid data
-      router.push('/login');
+      localStorage.removeItem('user');
+      router.replace('/login');
+    } finally {
+      setIsLoading(false);
     }
   }, [router]);
 
+  if (isLoading) {
+    return null;
+  }
+
+  if (!userRole) {
+    return null;
+  }
+
   const handleLogout = async () => {
     try {
-      // Update this URL to your new backend
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`);
-      localStorage.removeItem('user');
-      router.push('/login');
     } catch (error) {
       console.error('Logout error:', error);
-      // Still clear local storage and redirect even if API call fails
+    } finally {
       localStorage.removeItem('user');
-      router.push('/login');
+      router.replace('/login');
     }
   };
 
-  // Filter menu items based on user role
   const filteredMenuItems = menuItems.filter(item => 
     item.roles.includes(userRole)
   );
-  console.log("filteredMenuItems",filteredMenuItems)
-  console.log("userRole",userRole)
+
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -154,7 +167,7 @@ export default function AdminLayout({
           },
         }}
       >
-        <Toolbar /> {/* This creates space for the AppBar */}
+        <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
             {filteredMenuItems.map((item) => (
@@ -172,7 +185,7 @@ export default function AdminLayout({
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar /> {/* This creates space for the AppBar */}
+        <Toolbar />
         {children}
       </Box>
     </Box>
