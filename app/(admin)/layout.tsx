@@ -85,38 +85,45 @@ export default function AdminLayout({
   const [userRole, setUserRole] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    try {
-      const user = localStorage.getItem('user');
-      if (!user) {
-        router.replace('/login');
-        return;
-      }
+    const checkAuth = () => {
+      try {
+        const user = localStorage.getItem('user');
+        if (!user) {
+          router.replace('/login');
+          return false;
+        }
 
-      const userData = JSON.parse(user) as UserData;
-      if (!userData.role) {
+        const userData = JSON.parse(user) as UserData;
+        if (!userData.role) {
+          localStorage.removeItem('user');
+          router.replace('/login');
+          return false;
+        }
+
+        setUserRole(userData.role);
+        setUserName(`${userData.firstName} ${userData.lastName}`);
+        return true;
+      } catch (error) {
+        console.error('Error parsing user data:', error);
         localStorage.removeItem('user');
         router.replace('/login');
-        return;
+        return false;
       }
+    };
 
-      setUserRole(userData.role);
-      setUserName(`${userData.firstName} ${userData.lastName}`);
-    } catch (error) {
-      console.error('Error parsing user data:', error);
-      localStorage.removeItem('user');
-      router.replace('/login');
-    } finally {
-      setIsLoading(false);
-    }
+    const auth = checkAuth();
+    setIsAuthenticated(auth);
+    setIsLoading(false);
   }, [router]);
 
   if (isLoading) {
     return null;
   }
 
-  if (!userRole) {
+  if (!isAuthenticated) {
     return null;
   }
 
@@ -127,6 +134,7 @@ export default function AdminLayout({
       console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('user');
+      setIsAuthenticated(false);
       router.replace('/login');
     }
   };
