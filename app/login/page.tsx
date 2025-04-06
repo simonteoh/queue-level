@@ -22,10 +22,19 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, formData);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, 
+        formData,
+        {
+          withCredentials: true,  // This is crucial for cookies
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       console.log('Login response:', response.data);
       if (response.data.success) {
-        console.log("SHOULD REDIRECT")
+        console.log("SHOULD REDIRECT");
         localStorage.setItem('user', JSON.stringify(response.data.user));
         router.push('/dashboard');
       }
@@ -33,7 +42,7 @@ export default function Login() {
       console.error('Login error:', error);
       setError(error.response?.data?.error || 'Login failed');
     }
-  };
+};
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
