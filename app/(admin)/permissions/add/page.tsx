@@ -14,7 +14,6 @@ import {
   Alert,
   List,
   ListItem,
-  ListItemText,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -57,7 +56,7 @@ export default function AddPermission() {
 
   // Group permissions by module
   const groupedPermissions = permissions?.reduce((acc, permission) => {
-    const [action, module] = permission.name.split('_');
+    const [module] = permission.name.split('_');
     if (!acc[module]) {
       acc[module] = [];
     }

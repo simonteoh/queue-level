@@ -67,7 +67,7 @@ export default function EditPermission({ params }: { params: { id: string } }) {
 
   // Group permissions by module
   const groupedPermissions = permissions?.reduce((acc, permission) => {
-    const [action, module] = permission.name.split('_');
+    const [module] = permission.name.split('_');
     if (!acc[module]) {
       acc[module] = [];
     }

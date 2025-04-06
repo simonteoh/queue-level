@@ -9,10 +9,6 @@ interface ModulePermission {
   canView: boolean;
 }
 
-interface RoleModulePermissions {
-  roleId: number;
-  modulePermissions: ModulePermission[];
-}
 
 export async function GET(request: NextRequest) {
   try {

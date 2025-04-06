@@ -34,8 +34,8 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { message: 'User registered successfully' },
-      { status: 201 }
+      { message: 'User registered successfully', response: user },
+      { status: 201 }, 
     );
   } catch (error) {
     console.error('Registration error:', error);
