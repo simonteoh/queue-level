@@ -29,7 +29,7 @@ export default function EditMerchant({ params }: { params: { id: string } }) {
   const { data: merchant, isLoading } = useQuery({
     queryKey: ['merchant', params.id],
     queryFn: async () => {
-      const response = await axios.get(`/api/merchants/${params.id}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/merchants/${params.id}`);
       console.log('Fetched merchant:', response.data);
       return response.data;
     },
@@ -49,7 +49,7 @@ export default function EditMerchant({ params }: { params: { id: string } }) {
 
   const editMerchantMutation = useMutation({
     mutationFn: async (data: MerchantFormData) => {
-      const response = await axios.put(`/api/merchants/${params.id}`, {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/merchants/${params.id}`, {
         ...data,
         longitude: parseFloat(data.longitude),
         latitude: parseFloat(data.latitude),

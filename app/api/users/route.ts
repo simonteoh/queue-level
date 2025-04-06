@@ -1,13 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export async function GET() {
     try {
-        const users = await prisma.users.findMany();
-        return NextResponse.json(users, { status: 200 });
+        const users = await prisma.users.findMany({
+            orderBy: {
+                id: 'asc',
+            },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                role: true,
+                created_at: true,
+            },
+        });
+        return NextResponse.json(users);
     } catch (error) {
-        return NextResponse.json({ error: `Invalid request ${error}` }, { status: 400 });
+        return NextResponse.json(
+            { error: 'Failed to fetch users' },
+            { status: 500 }
+        );
     }
 }
 

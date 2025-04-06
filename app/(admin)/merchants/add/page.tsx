@@ -28,7 +28,7 @@ export default function AddMerchant() {
 
   const addMerchantMutation = useMutation({
     mutationFn: async (data: MerchantFormData) => {
-      const response = await axios.post('/api/merchants', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/merchants`, {
         ...data,
         longitude: parseFloat(data.longitude),
         latitude: parseFloat(data.latitude),

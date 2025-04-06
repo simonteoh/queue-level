@@ -7,6 +7,8 @@ import { Storefront } from '@mui/icons-material';
 import { Navigation } from '@toolpad/core/AppProvider';
 import { AuthProvider } from './providers/AuthProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './globals.css';
 
@@ -43,6 +45,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             </AppProvider>
           </AppRouterCacheProvider>
         </QueryClientProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnHover
+        />
       </body>
     </html>
   );

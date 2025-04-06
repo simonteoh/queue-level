@@ -39,7 +39,7 @@ export default function Merchants() {
 
   const getMerchants = async () => {
     try {
-      const res = await axios.get(`/api/merchants`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/merchants`)
       if (res) {
         return res.data
       }
@@ -54,7 +54,7 @@ export default function Merchants() {
 
   const deleteMerchantMutation = useMutation({
     mutationFn: async (id: number) => {
-      await axios.delete(`/api/merchants/${id}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/merchants/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getMerchants'] });
