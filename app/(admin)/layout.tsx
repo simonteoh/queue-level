@@ -34,6 +34,13 @@ interface MenuItem {
   roles: string[];
 }
 
+interface UserData {
+  role: string;
+  firstName: string;
+  lastName: string;
+  // add other user properties
+}
+
 const menuItems: MenuItem[] = [
   {
     text: 'Dashboard',
@@ -79,26 +86,33 @@ export default function AdminLayout({
   const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
-    // Get user role from the login response stored in localStorage
-    const user = localStorage.getItem('user');
-    console.log("localstorage", user)
-    if (user) {
-      const userData = JSON.parse(user);
-      setUserRole(userData.role);
-      setUserName(`${userData.firstName} ${userData.lastName}`);
+    try {
+      const user = localStorage.getItem('user');
+
+      console.log("localstorage", user)
+      if (user) {
+        const userData = JSON.parse(user);
+        setUserRole(userData.role);
+        setUserName(`${userData.firstName} ${userData.lastName}`);
+      }
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      localStorage.removeItem('user'); // Clear invalid data
+      router.push('/login');
     }
-  }, []);
+  }, [router]);
 
   const handleLogout = async () => {
     try {
-      // Call logout API to clear the auth cookie
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`);
-      // Clear local storage
+      // Update this URL to your new backend
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`);
       localStorage.removeItem('user');
-      // Redirect to login page
       router.push('/login');
     } catch (error) {
       console.error('Logout error:', error);
+      // Still clear local storage and redirect even if API call fails
+      localStorage.removeItem('user');
+      router.push('/login');
     }
   };
 
