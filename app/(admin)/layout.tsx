@@ -129,12 +129,26 @@ export default function AdminLayout({
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`);
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
+      // First, clear the local storage and state
       localStorage.removeItem('user');
       setIsAuthenticated(false);
+      
+      // Then attempt to call the logout API
+      // Only if it's configured
+      if (process.env.NEXT_PUBLIC_API_URL) {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {}, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // Add timeout to prevent hanging
+          timeout: 5000,
+        });
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Don't need to handle the error since we already cleared local storage
+    } finally {
+      // Always redirect to login
       router.replace('/login');
     }
   };
