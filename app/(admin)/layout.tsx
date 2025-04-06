@@ -81,6 +81,7 @@ export default function AdminLayout({
   useEffect(() => {
     // Get user role from the login response stored in localStorage
     const user = localStorage.getItem('user');
+    console.log("localstorage", user)
     if (user) {
       const userData = JSON.parse(user);
       setUserRole(userData.role);
@@ -105,6 +106,8 @@ export default function AdminLayout({
   const filteredMenuItems = menuItems.filter(item => 
     item.roles.includes(userRole)
   );
+  console.log("filteredMenuItems",filteredMenuItems)
+  console.log("userRole",userRole)
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
